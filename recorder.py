@@ -38,7 +38,7 @@ def get_player_id(ign, key):
     check_rate_limit_exceeded(r.status_code)
     if r.status_code is not 200:
         raise RuntimeError("error finding summoner: {}".format(ign))
-    return r.json()[ign]["id"]
+    return r.json()[ign.lower()]["id"]
 
 
 def is_player_in_game(ign, key):
