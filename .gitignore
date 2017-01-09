@@ -93,3 +93,4 @@ ENV/
 
 # application specific
 resources/
+errors/

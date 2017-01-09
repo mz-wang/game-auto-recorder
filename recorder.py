@@ -17,7 +17,7 @@ ERRORS_PATH = os.path.join(os.getcwd(), "errors")
 FIND_SUMMONER_BY_NAME_URL = "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/{}?api_key={}"
 GET_CURRENT_GAME_URL = "https://na.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/{}?api_key={}"
 OPGG_URL = "http://na.op.gg/summoner/userName={}"
-WAIT_FOR_OPGG_MAX_SECONDS = 15
+WAIT_FOR_OPGG_MAX_SECONDS = 12
 
 
 def read_summoner_names(file_name):
@@ -64,19 +64,25 @@ def click_find_game_and_record(ign):
     try:
         driver.get(OPGG_URL.format(ign))
         driver.find_element_by_id("SpectateButton").click()
+
         start = time.time()
         end = time.time()
         e = element_exists(driver, "//div[@class='Recording']/a")
         while e is None and end - start < WAIT_FOR_OPGG_MAX_SECONDS:
             e = element_exists(driver, "//div[@class='Recording']/a")
             end = time.time()
+
+        if element_exists(driver, "//div[@class='Recording']/div[contains(@class, 'NowRecording')]") is not None:
+            LOG.info("already recording for: {}".format(ign))
+            return
+
         e.click()
         LOG.info("started recording for: {}".format(ign))
     except Exception:
         LOG.error("could not record: {}".format(ign))
         if not os.path.exists(ERRORS_PATH):
             os.makedirs(ERRORS_PATH)
-        driver.save_screenshot(os.path.join(ERRORS_PATH, "ss_{}.png".format(ign)))
+        driver.save_screenshot(os.path.join(ERRORS_PATH, "ss_{}_{}.png".format(ign, time.time())))
     driver.close()
 
 
