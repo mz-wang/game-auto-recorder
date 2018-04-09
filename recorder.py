@@ -1,11 +1,11 @@
 import argparse
-import logging
-import sys
-import os
 import errno
-import requests
+import logging
+import os
+import sys
 import time
 
+import requests
 from selenium import webdriver
 
 FORMAT = "%(asctime)-15s - %(levelname)s - %(module)20s:%(lineno)-5d - %(message)s"
