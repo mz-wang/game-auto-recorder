@@ -1,6 +1,7 @@
-certifi==2018.1.18
+-i https://pypi.python.org/simple/
+certifi==2019.9.11
 chardet==3.0.4
-idna==2.6
-requests==2.18.4
+idna==2.7
+requests==2.20.0
 selenium==3.11.0
-urllib3==1.22
+urllib3==1.24.3
